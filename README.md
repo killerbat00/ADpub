@@ -24,7 +24,7 @@ The body of the response from `/status` looks like this:
 ```javascript
 {
     "status": "OK",
-    "images_uploaded": "<NUMBER OF PNG IMAGES UPLOADED SO FAR">,
+    "images_uploaded": "<NUMBER OF PNG IMAGES UPLOADED SO FAR>",
     "deployment_info": {
         "machine": "<DEPLOYED MACHINE TYPE e.g. "i386">",
         "platform": "<DEPLOYED MACHINE PLATFORM>",
@@ -41,7 +41,7 @@ Note: Currently, the value of `status` will always be OK if the `/status` endpoi
 ### 2. `GET /breweries` - Creative consumption of a publicly available API :beer:
 The `/breweries` endpoint combines two publicly available APIs to return a JSON-encoded response of craft beer breweries near the user.
 The IP address of the request to `/breweries` is supplied to [ip-api.com](http://ip-api.com)'s IP Geolocation API to determine the location of the user.
-This location information is then passed to [BreweryDB](www.brewerydb.com)'s API to query for craft beer breweries local to that location.
+This location information is then passed to [BreweryDB](http://www.brewerydb.com)'s API to query for craft beer breweries local to that location.
 This list of breweries is then returned in a JSON object as the response to `/breweries`.
 
 The body of the response from `/breweries` looks like this:
@@ -90,6 +90,7 @@ Requests to endpoints not specified above will request in an HTTP 500 error.
 Since ADpub uses the [chalice](https://github.com/awslabs/chalice) framework, it runs on AWS Lambda.
 
 A deployed and running version of the ADpub service is currently available at: [link](URL)
+
 If you would like to deploy ADpub to your own AWS account, follow instructions below for [Installing ADpub](#installing-adpub-on-linux)
 
 ### Interacting with ADpub
@@ -98,6 +99,7 @@ You can use `curl`, [`httpie`](https://github.com/jkbrzt/httpie) or your favorit
 The following guide, however, will use `httpie` for interaction. You can install `httpie` using `pip install httpie`.
 
 1. Retrieving the current status.
+
 To retrieve the current status of ADpub, point your HTTP client to the `/status` endpoint.
 ````
 $ http https://<ADpub URL>/status
@@ -115,6 +117,7 @@ HTTP/1.1 200 OK
 }
 ````
 2. Finding local breweries.
+
 To find local breweries, point your HTTP client to the `/breweries` endpoint.
 ````
 $ http https://<ADpub URL>/breweries
@@ -146,6 +149,7 @@ HTTP/1.1 200 OK
 }
 ````
 3. Uploading an image.
+
 To upload an image to ADpub, send a POST request with your HTTP client to the `/image` endpoint.
 This POST request should have a `Content-Type: application/json` and the base64 encoded PNG image should be stored in the `data` key of the JSON request body.
 
@@ -206,7 +210,7 @@ $ pip install -r requirements.txt
 ADpub and chalice are now installed on your machine.
 
 In order to use the `/breweries` endpoint correctly, you will need an API key from BreweryDB.
-You can do so by signing up at [BreweryDB.com/developers](www.brewerydb.com/developers/apps)
+You can do so by signing up at [BreweryDB.com/developers](http://www.brewerydb.com/developers/)
 Once you have registered a new application and obtained an API key, copy it into the `adpub/brewery_key.txt` file in the adpub repo.
 
 ### Deploying ADpub
@@ -221,7 +225,7 @@ To deploy ADpub locally from the ADpub project directory:
 This command deploys the application locally and allows you to test using `localhost:8000` as the URL.
 
 ### Testing ADpub
-ADpub comes with a suite of unittests that ensure it is functioning correctly. These tests are in the [test](/tests) directory of the repo.
+ADpub comes with a suite of unittests that ensure it is functioning correctly. These tests are in the [test_app.py](test_app.py) file.
 
 To run the test suite, execute `python -m unittest`  from the ADpub project directory.
 
