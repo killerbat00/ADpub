@@ -10,11 +10,11 @@ As a simple API service returning JSON, ADpub aims to do only 3 things:
 
 The raw data from the API can currently be consumed directly by making HTTP requests to the endpoints specified below.
 
-To discover the services available with ADpub, see [Available Services](#Available-services-and-endpoints)
-To learn more about using ADpub, see [Using ADpub](#Using-ADpub)
+To discover the services available with ADpub, see [Available Services](#available-services)
+To learn more about using ADpub, see [Using ADpub](#using-adpub)
 
 ## Available Services
-To access the service endpoints, ADpub must be deployed using chalice. See [Using ADpub](#Using-ADpub) for more information on deployment.
+To access the service endpoints, ADpub must be deployed using chalice. See [Using ADpub](#using-adpub) for more information on deployment.
 
 ### 1. `GET /status` - Status Page :ok_hand:
 The `/status` endpoint returns a JSON-encoded response of status information about the ADpub service.
@@ -90,7 +90,7 @@ Requests to endpoints not specified above will request in an HTTP 500 error.
 Since ADpub uses the [chalice](https://github.com/awslabs/chalice) framework, it runs on AWS Lambda.
 
 A deployed and running version of the ADpub service is currently available at: [link](URL)
-If you would like to deploy ADpub to your own AWS account, follow instructions below for [Installing ADpub](#Installing-ADpub-on-Linux)
+If you would like to deploy ADpub to your own AWS account, follow instructions below for [Installing ADpub](#installing-adpub-on-linux)
 
 ### Interacting with ADpub
 You can use `curl`, [`httpie`](https://github.com/jkbrzt/httpie) or your favorite HTTP client to interact with the services on ADpub.
@@ -214,7 +214,7 @@ You have two options when it comes to deployment, deploying to AWS Lambda, or de
 
 To deploy ADpub to AWS lambda from the ADpub project directory:
 `$ chalice deploy`
-This command will deploy the application and print a URL for you to use when interacting with the API, see [Interacting with ADpub](#Interacting-with-ADpub)
+This command will deploy the application and print a URL for you to use when interacting with the API, see [Interacting with ADpub](#interacting-with-adpub)
 
 To deploy ADpub locally from the ADpub project directory:
 `$ chalice local`
