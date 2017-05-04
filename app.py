@@ -1,6 +1,8 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import platform
+
 """
 ADpub is a simple publishing service written using Python and chalice and deployed to AWS Lambda.
 """
@@ -8,6 +10,7 @@ ADpub is a simple publishing service written using Python and chalice and deploy
 from chalice import Chalice
 
 app = Chalice(app_name='adpub')
+app.debug = True
 
 
 @app.route('/status')
@@ -15,7 +18,14 @@ def status():
     """
     :return: Status information about the ADpub service.
     """
-    return {"hello": "world!"}
+    resp = {"status": "OK",
+            "images_uploaded": 0}
+
+    deployment_info = {"machine": platform.machine(), "platform": platform.platform(),
+                       "processor": platform.processor()}
+
+    resp["deployment_info"] = deployment_info
+    return resp
 
 
 @app.route('/breweries')

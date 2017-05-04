@@ -84,7 +84,7 @@ If any errors occur while attempting to upload the image, the `status` key will 
 Images uploaded through `/image` must be *.png images. Other filetypes will not be uploaded and will result in a `"failure"` `status` in the response.
 
 ### Other endpoints
-Requests to endpoints not specified above will request in an HTTP 500 error.
+Requests to endpoints not specified above will request in an HTTP 500 error or a Server Not Found error in your browser.
 
 ## Using ADpub
 Since ADpub uses the [chalice](https://github.com/awslabs/chalice) framework, it runs on AWS Lambda.
@@ -103,16 +103,19 @@ The following guide, however, will use `httpie` for interaction. You can install
 To retrieve the current status of ADpub, point your HTTP client to the `/status` endpoint.
 ````
 $ http https://<ADpub URL>/status
-HTTP/1.1 200 OK
-
+HTTP/1.0 200 OK
+Content-Length: 186
+Content-Type: application/json
+Date: Thu, 04 May 2017 23:48:36 GMT
+Server: BaseHTTP/0.6 Python/3.6.1
 
 {
     "status": "OK",
-    "images_uploaded": "<NUMBER OF PNG IMAGES UPLOADED SO FAR">,
+    "images_uploaded": 0,
     "deployment_info": {
-        "machine": "<DEPLOYED MACHINE TYPE e.g. "i386">",
-        "platform": "<DEPLOYED MACHINE PLATFORM>",
-        "processor": "<DEPLOYED MACHINE PROCESSOR>"
+        "machine": "AMD64",
+        "platform": "Windows-8.1-6.3.9600-SP0",
+        "processor": "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel"
     }
 }
 ````
