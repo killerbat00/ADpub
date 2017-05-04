@@ -1,0 +1,3 @@
+chalice==0.8.1
+botocore==1.5.0
+boto3==1.3.1
