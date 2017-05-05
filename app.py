@@ -111,13 +111,16 @@ def image() -> dict:
     image_data = base64.b64decode(image_data)
     # upload image to S3, return URL
     filename = f"{uuid.uuid4()}.png"
-    S3.put_object(
-        Bucket=S3_BUCKET,
-        Key=filename,
-        Body=image_data,
-        ACL="public-read",
-        ContentType="image/png"
-    )
+    try:
+        S3.put_object(
+            Bucket=S3_BUCKET,
+            Key=filename,
+            Body=image_data,
+            ACL="public-read",
+            ContentType="image/png"
+        )
+    except botocore.exceptions.ClientError:
+        return failure_resp
 
     try:
         s3_resp = S3.get_object(Bucket=S3_BUCKET, Key="Uploads")
@@ -126,7 +129,10 @@ def image() -> dict:
     except (botocore.exceptions.ClientError, KeyError):
         num_uploads = "1"
 
-    S3.put_object(Bucket=S3_BUCKET, Key="Uploads", Body=num_uploads)
+    try:
+        S3.put_object(Bucket=S3_BUCKET, Key="Uploads", Body=num_uploads)
+    except botocore.exceptions.ClientError:
+        return failure_resp
 
     return {"status": "ok",
             "data": {
