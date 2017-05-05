@@ -153,7 +153,7 @@ HTTP/1.1 200 OK
 }
 ````
 
-Note: this endpoint does not work when calice is deployed locally.
+Note: this endpoint does not work when chalice is deployed locally.
 3. Uploading an image.
 
 To upload an image to ADpub, send a POST request with your HTTP client to the `/image` endpoint.
