@@ -216,7 +216,9 @@ $ pip install -r requirements.txt
 The requirements for chalice are now installed on your machine.
 
 In order to use the `/breweries` endpoint correctly, you will need an API key from BreweryDB.
+
 You can do so by signing up at [BreweryDB.com/developers](http://www.brewerydb.com/developers/)
+
 Once you have registered a new application and obtained an API key, copy it into the [chalicelib/\_\_init__.py](chalicelib/__init__.py) file in the adpub repo.
 
 ### Deploying ADpub
