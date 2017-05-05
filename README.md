@@ -131,6 +131,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
+    "status": "OK",
     "data": [
         {
             "name": "The Great Dane Pub & Brewing Company",
