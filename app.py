@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """
-ADpub is a simple publishing service written using Python and chalice and deployed to AWS Lambda.
+ADpub is a simple publishing service written using Python and chalice and
+deployed to AWS Lambda.
 See README.md for full documentation on the service endpoints.
 """
 
-import requests
 import platform
-
-from chalice import Chalice
 from typing import Optional
+
+import requests
+from chalice import Chalice
+
 from chalicelib import BREWERY_KEY
 
 app = Chalice(app_name='adpub')
@@ -25,7 +27,8 @@ def status():
     resp = {"status": "OK",
             "images_uploaded": 0}
 
-    deployment_info = {"machine": platform.machine(), "platform": platform.platform(),
+    deployment_info = {"machine": platform.machine(),
+                       "platform": platform.platform(),
                        "processor": platform.processor()}
 
     resp["deployment_info"] = deployment_info
@@ -35,9 +38,11 @@ def status():
 @app.route('/breweries')
 def breweries():
     """
-    The breweries route will return breweries that are near location of the IP address that requested the route.
-    It does so by first utilizing the ip-api.com IP geolocation service and passing the location into
+    The breweries route will return breweries that are near location of the
+    IP address that requested the route. It does so by first utilizing the
+    ip-api.com IP geolocation service and passing the location into
     BreweryDB.com's location API.
+
     :return: A JSON encoded list of breweries near the request's IP
     """
     request_ip = None
@@ -65,7 +70,16 @@ def breweries():
     if not brewery_data:
         return failure_resp
 
-    success_resp["data"] = brewery_data
+    success_resp["data"] = []
+
+    for i in brewery_data.get("data"):
+        info = {"name": i["brewery"].get("name"),
+                "website": i["brewery"].get("website"),
+                "phone": i.get("phone"),
+                "street_address": i.get("streetAddress"),
+                "postal_code": i.get("postalCode")}
+        success_resp["data"].append(info)
+
     return success_resp
 
 
@@ -80,8 +94,9 @@ def image():
 def _find_city(ip: str) -> Optional[str]:
     """
     Uses ip-api to find the city in which an IP address is located.
+
     :param ip: the ip address to geolocate
-    :return:   the city in which the IP address is located or None if unable to find it
+    :return:   the city where theIP address is located or None
     """
     geo_ip_url = "http://ip-api.com/json/"
 
@@ -102,17 +117,18 @@ def _find_city(ip: str) -> Optional[str]:
 def _find_breweries(city: str) -> Optional[dict]:
     """
     Uses the BreweryDB API to find all breweries located in a given city.
-    the name, website, phone number, street address and ZIP code are parsed from the API's response
-    and returned in a list.
+    the name, website, phone number, street address and ZIP code are
+    parsed from the API's response and returned in a list.
+
     :param city: the city for which to search for breweries
     :return:     a list of dictionaries each containing data on a brewery
     """
     brewery_url = "http://api.brewerydb.com/v2/"
 
-    # Query Brewery DB's application to locate local breweries
     params = {"key": BREWERY_KEY,
               "locality": city}
 
+    # Query Brewery DB's application to locate local breweries
     try:
         r = requests.get(f"{brewery_url}/locations", params=params)
         r.raise_for_status()
@@ -127,4 +143,3 @@ def _find_breweries(city: str) -> Optional[dict]:
         return
 
     return brewery_resp
-
