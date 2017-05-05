@@ -151,6 +151,8 @@ HTTP/1.1 200 OK
     "status": "failure"
 }
 ````
+
+Note: this endpoint does not work when calice is deployed locally.
 3. Uploading an image.
 
 To upload an image to ADpub, send a POST request with your HTTP client to the `/image` endpoint.
@@ -210,26 +212,24 @@ $ cd <ADpub DIRECTORY>
 $ pip install -r requirements.txt
 ````
 
-ADpub and chalice are now installed on your machine.
+The requirements for chalice are now installed on your machine.
 
 In order to use the `/breweries` endpoint correctly, you will need an API key from BreweryDB.
 You can do so by signing up at [BreweryDB.com/developers](http://www.brewerydb.com/developers/)
-Once you have registered a new application and obtained an API key, copy it into the `adpub/brewery_key.txt` file in the adpub repo.
+Once you have registered a new application and obtained an API key, copy it into the [chalicelib/\_\_init__.py](chalicelib/__init__.py) file in the adpub repo.
 
 ### Deploying ADpub
 You have two options when it comes to deployment, deploying to AWS Lambda, or deploying to your local machine.
 
 To deploy ADpub to AWS lambda from the ADpub project directory:
 `$ chalice deploy`
+
 This command will deploy the application and print a URL for you to use when interacting with the API, see [Interacting with ADpub](#interacting-with-adpub)
 
 To deploy ADpub locally from the ADpub project directory:
 `$ chalice local`
+
 This command deploys the application locally and allows you to test using `localhost:8000` as the URL.
 
-### Testing ADpub
-ADpub comes with a suite of unittests that ensure it is functioning correctly. These tests are in the [test_app.py](test_app.py) file.
-
-To run the test suite, execute `python -m unittest`  from the ADpub project directory.
-
+When the application is deployed locally, the `/breweries` route will not function properly.
 
