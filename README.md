@@ -2,6 +2,8 @@
 
 ADpub is a simple publishing service written using Python and [chalice](https://github.com/awslabs/chalice) and deployed to AWS Lambda.
 
+:exclamation: :exclamation: :exclamation: A live version is available [here](https://dcv3xhklra.execute-api.us-east-1.amazonaws.com/dev/status) :exclamation: :exclamation: :exclamation:
+
 ## Features
 As a simple API service returning JSON, ADpub aims to do only 3 things:
 1. Provide a simple service status page.
@@ -175,7 +177,7 @@ HTTP/1.1 200 OK
 }
 ````
 
-If the supplied image was not a PNG image or ADpub was not able to upload the image, the response will look like this:
+If ADpub was not able to upload the image, the response will look like this:
 ````
 $ http POST https://<ADpub URL>/breweries data=$(base64 -i <JPG IMAGE>)
 HTTP/1.1 200 OK
@@ -188,7 +190,7 @@ HTTP/1.1 200 OK
 ### Installing ADpub on Linux
 A deployed and running version of the ADpub service is currently available at: [link](URL)
 
-To deploy this code directly, you will need to be using Python 3.6 or 2.7 ahd have your AWS credentials correctly configured.
+To deploy this code directly, you will need to be using Python 3.6 and have your AWS credentials correctly configured.
 
 If you have not installed the AWS CLI, execute the following commands in a terminal:
 ````
@@ -223,6 +225,8 @@ In order to use the `/breweries` endpoint correctly, you will need an API key fr
 You can do so by signing up at [BreweryDB.com/developers](http://www.brewerydb.com/developers/)
 
 Once you have registered a new application and obtained an API key, copy it into the [chalicelib/\_\_init__.py](chalicelib/__init__.py) file in the adpub repo.
+
+You will also need to update the `S3_BUCKET` variable in [chalicelib/\_\_init__.py](chalicelib/__init__.py) with the name of an S3 Bucket that you own. 
 
 ### Deploying ADpub
 You have two options when it comes to deployment, deploying to AWS Lambda, or deploying to your local machine.

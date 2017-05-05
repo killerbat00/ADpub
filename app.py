@@ -6,37 +6,49 @@ ADpub is a simple publishing service written using Python and chalice and
 deployed to AWS Lambda.
 See README.md for full documentation on the service endpoints.
 """
-
+import base64
 import platform
+import uuid
 from typing import Optional
 
+import boto3
+import botocore
 import requests
 from chalice import Chalice
 
-from chalicelib import BREWERY_KEY
+from chalicelib import BREWERY_KEY, S3_BUCKET
 
 app = Chalice(app_name='adpub')
 app.debug = True
 
+failure_resp = {"status": "failure"}
+S3 = boto3.client('s3')
+
 
 @app.route('/status')
-def status():
+def status() -> dict:
     """
     :return: Status information about the ADpub service.
     """
-    resp = {"status": "OK",
-            "images_uploaded": 0}
+    try:
+        s3_resp = S3.get_object(Bucket=S3_BUCKET, Key="Uploads")
+        num_uploads = int(s3_resp["Body"].read())
+    except (botocore.exceptions.ClientError, KeyError):
+        num_uploads = 0
+
+    response = {"status": "OK",
+                "images_uploaded": num_uploads}
 
     deployment_info = {"machine": platform.machine(),
                        "platform": platform.platform(),
                        "processor": platform.processor()}
 
-    resp["deployment_info"] = deployment_info
-    return resp
+    response["deployment_info"] = deployment_info
+    return response
 
 
 @app.route('/breweries')
-def breweries():
+def breweries() -> dict:
     """
     The breweries route will return breweries that are near location of the
     IP address that requested the route. It does so by first utilizing the
@@ -45,9 +57,8 @@ def breweries():
 
     :return: A JSON encoded list of breweries near the request's IP
     """
-    request_ip = None
-    failure_resp = {"status": "failure"}
     success_resp = {"status": "OK"}
+    request_ip = None
     current_request = app.current_request.to_dict()
 
     # Look for the first IP address in the X-Forwarded-For HTTP Header
@@ -84,11 +95,43 @@ def breweries():
 
 
 @app.route('/image', methods=['POST'])
-def image():
+def image() -> dict:
     """
     :return: Status information about the ADpub service.
     """
-    return {"hello": "world!"}
+    body = app.current_request.json_body
+
+    if not body:
+        return failure_resp
+
+    image_data = body.get("data")
+    if not image_data:
+        return failure_resp
+
+    image_data = base64.b64decode(image_data)
+    # upload image to S3, return URL
+    filename = f"{uuid.uuid4()}.png"
+    S3.put_object(
+        Bucket=S3_BUCKET,
+        Key=filename,
+        Body=image_data,
+        ACL="public-read",
+        ContentType="image/png"
+    )
+
+    try:
+        s3_resp = S3.get_object(Bucket=S3_BUCKET, Key="Uploads")
+        # ints are not valid values for S3
+        num_uploads = str(int(s3_resp["Body"].read()) + 1)
+    except (botocore.exceptions.ClientError, KeyError):
+        num_uploads = "1"
+
+    S3.put_object(Bucket=S3_BUCKET, Key="Uploads", Body=num_uploads)
+
+    return {"status": "ok",
+            "data": {
+                "url": f"https://s3.amazonaws.com/{S3_BUCKET}/{filename}"
+            }}
 
 
 def _find_city(ip: str) -> Optional[str]:

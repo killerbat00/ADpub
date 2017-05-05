@@ -8,3 +8,4 @@ aren't improperly shared.
 """
 
 BREWERY_KEY = "<YOUR_BREWERY_DB_API_APP_KEY_HERE>"
+S3_BUCKET = "<YOUR_S3_BUCKET>"
