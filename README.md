@@ -120,6 +120,7 @@ Server: BaseHTTP/0.6 Python/3.6.1
     }
 }
 ````
+
 2. Finding local breweries.
 
 To find local breweries, point your HTTP client to the `/breweries` endpoint.
@@ -154,6 +155,7 @@ HTTP/1.1 200 OK
 ````
 
 Note: this endpoint does not work when chalice is deployed locally.
+
 3. Uploading an image.
 
 To upload an image to ADpub, send a POST request with your HTTP client to the `/image` endpoint.
