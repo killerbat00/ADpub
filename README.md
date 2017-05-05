@@ -10,8 +10,9 @@ As a simple API service returning JSON, ADpub aims to do only 3 things:
 
 The raw data from the API can currently be consumed directly by making HTTP requests to the endpoints specified below.
 
-To discover the services available with ADpub, see [Available Services](#available-services)
-To learn more about using ADpub, see [Using ADpub](#using-adpub)
+To discover the services available with ADpub, see [Available Services](#available-services).
+
+To learn more about using ADpub, see [Using ADpub](#using-adpub).
 
 ## Available Services
 To access the service endpoints, ADpub must be deployed using chalice. See [Using ADpub](#using-adpub) for more information on deployment.
@@ -125,19 +126,19 @@ To find local breweries, point your HTTP client to the `/breweries` endpoint.
 ````
 $ http https://<ADpub URL>/breweries
 HTTP/1.1 200 OK
-
+Connection: keep-alive
+Content-Type: application/json
 
 {
-    "status": "OK",
     "data": [
         {
-            "name": "<BREWERY NAME>",
-            "website": "<BREWERY WEBSITE>",
-            "phone": "<BREWERY PHONE NUMBER>",
-            "street_address": "<BREWERY ADDRESS>",
-            "postal_code": "<BREWERY POSTAL CODE>"
+            "name": "The Great Dane Pub & Brewing Company",
+            "phone": "608-284-0000",
+            "postal_code": "53703",
+            "street_address": "123 E. Doty Street",
+            "website": "http://www.greatdanepub.com/"
         },
-        ...
+    ...
     ]
 }
 ````
