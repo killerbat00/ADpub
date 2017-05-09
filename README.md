@@ -166,20 +166,21 @@ This POST request should have a `Content-Type: application/json` and the base64 
 
 For example:
 ````
-$ http POST https://<ADpub URL>/breweries data=$(base64 -i <PNG IMAGE>)
+$ http POST https://<ADpub URL>/image data="$(base64 -i <IMAGE.png>)"
 HTTP/1.1 200 OK
 
 {
-    "status": "OK",
     "data": {
-        "URL": "<S3 URL FOR IMAGE>"
-    }
+        "url": "<S3 IMAGE URL>
+    },
+    "status": "ok"
 }
+
 ````
 
 If ADpub was not able to upload the image, the response will look like this:
 ````
-$ http POST https://<ADpub URL>/breweries data=$(base64 -i <JPG IMAGE>)
+$ http POST https://<ADpub URL>/image data="$(base64 -i <IMAGE.png>)"
 HTTP/1.1 200 OK
 
 {
