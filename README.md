@@ -2,7 +2,7 @@
 
 ADpub is a simple publishing service written using Python and [chalice](https://github.com/awslabs/chalice) and deployed to AWS Lambda.
 
-:exclamation: :exclamation: :exclamation: A live version is available [here](https://dcv3xhklra.execute-api.us-east-1.amazonaws.com/dev/status) :exclamation: :exclamation: :exclamation:
+:exclamation: :exclamation: :exclamation: A live version is available [here](https://dcv3xhk1ra.execute-api.us-east-1.amazonaws.com/dev/status) :exclamation: :exclamation: :exclamation:
 
 ## Features
 As a simple API service returning JSON, ADpub aims to do only 3 things:
